@@ -3,6 +3,7 @@ const bcrypt = require('bcrypt');
 const db = require('../../config/db')
 const validations = require('../helpers/validations')
 const passport = require("passport");
+const jwt = require('jsonwebtoken');
 
 exports.test = (req,res)=>{
     res.send('hello world');
