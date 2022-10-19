@@ -15,6 +15,8 @@ exports.register = async (req,res)=>{
     const errors = {}
     validations.validateName(first_name,last_name,errors);
     validations.validatePassword(password,confirm_password,errors)
+    validations.validateEmail(email_address,errors)
+    validations.validatePhoneNumber(phone_number,errors)
     const isEmpty = Object.keys(errors).length === 0;
     if(isEmpty){
         const hash = await bcrypt.hash(password,10);

@@ -35,9 +35,29 @@ const validateName = (first_name,last_name,errors)=>{
     if(!first_name.match(regExp) || !last_name.match(regExp)){
          errors.first_name = 'You are allowed to insert only letters as your name!'
          errors.last_name = 'You are allowed to insert only letters as your last name!'
-         return
     }
 }
 
+const validateEmail = (email,errors)=>{
+    const regExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    if(email === ""){
+        errors.email_address = 'Email is required'
+        return
+    }
+    if(!email.match(regExp)){
+        errors.email_address = 'Please, give a correct email address'
+    }
+}
 
-module.exports = {validatePassword,validateName};
+const validatePhoneNumber = (phone_number,errors)=>{
+    const regExp = /^[0-9]*$/;
+    if(phone_number === ""){
+        errors.phone_number = 'Phone number is required'
+        return
+    }
+    if(!phone_number.match(regExp)){
+        errors.phone_number = 'You can give only digits!'
+    }
+}
+
+module.exports = {validatePassword,validateName,validateEmail,validatePhoneNumber};
