@@ -19,13 +19,24 @@ const validatePassword = (password,confirm_password,errors)=>{
 }
 
 const validateName = (first_name,last_name,errors)=>{
+    const regExp = /^[A-Za-z]+$/;
     if(first_name === ""){
         return errors.first_name = 'Please, insert your first name!'
     }
     if(last_name === ""){
         return errors.last_name = 'Please, insert your last name!'
     }
-
+    if(first_name.length <= 1){
+        return errors.first_name = 'It seems like you have a really short name:)'
+    }
+    if(last_name.length<=1){
+        return errors.last_name = 'Lastname should have at least 2 characters'
+    }
+    if(!first_name.match(regExp) || !last_name.match(regExp)){
+         errors.first_name = 'You are allowed to insert only letters as your name!'
+         errors.last_name = 'You are allowed to insert only letters as your last name!'
+         return
+    }
 }
 
 

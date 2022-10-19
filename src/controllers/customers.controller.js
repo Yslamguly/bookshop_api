@@ -13,6 +13,7 @@ exports.test = (req,res)=>{
 exports.register = async (req,res)=>{
     const {first_name,last_name,email_address,phone_number,password,confirm_password} = req.body;
     const errors = {}
+    validations.validateName(first_name,last_name,errors);
     validations.validatePassword(password,confirm_password,errors)
     const isEmpty = Object.keys(errors).length === 0;
     if(isEmpty){
