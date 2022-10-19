@@ -2,6 +2,7 @@ require('dotenv').config();
 const bcrypt = require('bcrypt');
 const db = require('../../config/db')
 const validations = require('../helpers/validations')
+const functions = require('../helpers/functions');
 const passport = require("passport");
 const jwt = require('jsonwebtoken');
 
@@ -11,13 +12,14 @@ exports.test = (req,res)=>{
 
 exports.register = async (req,res)=>{
     const {first_name,last_name,email_address,phone_number,password,confirm_password} = req.body;
-    let errors = []
+    const errors = {}
     validations.validatePassword(password,confirm_password,errors)
-    if(errors.length <= 0){
+    const isEmpty = Object.keys(errors).length === 0;
+    if(isEmpty){
         const hash = await bcrypt.hash(password,10);
         return db('bookstore.customers').returning('*').insert({
-            first_name:first_name,
-            last_name:last_name,
+            first_name:functions.CapitalizeName(first_name),
+            last_name:functions.CapitalizeName(last_name),
             email_address:email_address,
             phone_number:phone_number,
             password:hash

@@ -28,34 +28,8 @@ app.use(passport.initialize());
 // Store our variables to be persisted across the whole session. Works with app.use(Session) above
 app.use(passport.session());
 app.use(flash());
-// app.post('/customers/login',
-//     passport.authenticate("local", {failureFlash: true,successFlash: 'Successful!' }),
-//     function (req,res,err) {
-//
-//     // res.send(req.session.flash.error)
-//     res.send(req.user)
-// })
-// app.post('/customers/login',(req,res,next)=>{
-//     passport.authenticate("local",{failureFlash: true,successFlash: 'Successful!' },(err,user,info)=>{
-//         if (err) { return next(err); }
-//         if (!user) { return res.json(info); }
-//         req.logIn(user,(err)=>{
-//             if(err){res.send(req.session.flash.error);}
-//             return res.send(req.user);
-//         })
-//     })(req,res,next)
-// })
 app.use('/customers',customerRoutes)
-
-
 app.use('/',routes)
-// })
-// }),(req,res,err)=>{
-//     if(req.error){
-//         res.send(req.session.flash.error);
-//     }
-//     res.send(req.user)
-
 app.listen(8000)
 module.exports = app;
 
