@@ -27,9 +27,9 @@ exports.register = async (req,res)=>{
             phone_number:phone_number,
             password:hash
         }).then(customer=>res.json(customer[0]))
-          .catch(err=>res.send(err).status(400))
+          .catch(err=>res.status(400).send(err))
     }else{
-        res.send(errors).status(400)
+        res.status(400).send(errors)
     }
 }
 
