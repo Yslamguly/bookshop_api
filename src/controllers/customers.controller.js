@@ -40,7 +40,7 @@ exports.register = async (req,res)=>{
                 })
                 .then(trx.commit)
                 .catch(trx.rollback)
-        }).catch(res.status(400).json('unable to register'))
+        }).catch(err => res.status(400).json('unable to register'))
     }
     else{
         res.status(400).send(errors)
