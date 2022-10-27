@@ -20,27 +20,56 @@ exports.register = async (req,res)=>{
     const isEmpty = Object.keys(errors).length === 0;
     if(isEmpty){
         const hash = await bcrypt.hash(password,10);
-        return db('bookstore.customers').returning('*').insert({
-            first_name:functions.CapitalizeName(first_name),
-            last_name:functions.CapitalizeName(last_name),
-            email_address:email_address,
-            phone_number:phone_number,
-            password:hash
-        }).then(customer=>res.json(customer[0]))
-          .catch(err=>res.status(400).send(err))
-    }else{
+        db.transaction(trx => {
+            trx.insert({
+                first_name:functions.CapitalizeName(first_name),
+                last_name:functions.CapitalizeName(last_name),
+                email_address:email_address,
+                phone_number:phone_number,
+                password:hash
+            }).into('bookstore.customers').returning('*')
+                .then(customers=>{
+                    console.log(customers)
+                    return trx('bookstore.shopping_cart')
+                        .returning('*')
+                        .insert({
+                            customer_id:customers[0].id,
+                            date_created:new Date()
+                        }
+                    ).then(res.json(customers[0]))
+                })
+                .then(trx.commit)
+                .catch(trx.rollback)
+        }).catch(res.status(400).json('unable to register'))
+    }
+    else{
         res.status(400).send(errors)
     }
+    //     return db('bookstore.customers').returning('*').insert({
+    //         first_name:functions.CapitalizeName(first_name),
+    //         last_name:functions.CapitalizeName(last_name),
+    //         email_address:email_address,
+    //         phone_number:phone_number,
+    //         password:hash
+    //     }).then(customer=>res.json(customer[0]))
+    //       .catch(err=>res.status(400).send(err))
+    // }else{
+    //     res.status(400).send(errors)
+    // }
 }
 
 exports.login = async (req,res,next)=>{
     passport.authenticate("local",{failureFlash: true,successFlash: 'Successful!' },(err,user,info)=>{
         if (err) { return next(err); }
-        if (!user) { return res.status(400).json(info); }
+        if (!user) {
+            return res.status(400).json(info);
+        }
         req.logIn(user,(err)=>{
-            if(err){res.status(400).json(info);}
+            if(err){
+                res.status(400).json(info);
+            }
             console.log(req.session)
-            res.send(req.user);
+            res.json(req.user);
         })
     })(req,res,next)
 }

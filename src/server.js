@@ -20,7 +20,10 @@ app.use(
         resave: false,
         // Save empty value if there is no value which we do not want to do
         saveUninitialized: false,
-        cookie: { maxAge: 600000 } //after 10 minutes the user will be logged out
+        cookie: { maxAge: 600000, //after 10 minutes the user will be logged out
+                  secure: false,  // if true only transmit cookie over https
+                  httpOnly: false, // if true prevent client side JS from reading the cookie
+        }
     })
 );
 // Function inside passport which initializes passport
