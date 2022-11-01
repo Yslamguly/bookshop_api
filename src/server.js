@@ -6,6 +6,7 @@ const flash = require("connect-flash");
 const session = require("express-session");
 const initializePassport = require('./helpers/passport-config')
 const customerRoutes = require('./routes/customers.route')
+const shoppingCartRoutes = require('./routes/shopping_cart.route')
 const routes = require('./routes/routes')
 const app = express();
 initializePassport(passport)
@@ -21,8 +22,8 @@ app.use(
         // Save empty value if there is no value which we do not want to do
         saveUninitialized: false,
         cookie: { maxAge: 600000, //after 10 minutes the user will be logged out
-                  secure: false,  // if true only transmit cookie over https
-                  httpOnly: false, // if true prevent client side JS from reading the cookie
+                  // secure: false,  // if true only transmit cookie over https
+                  // httpOnly: false, // if true prevent client side JS from reading the cookie
         }
     })
 );
@@ -32,6 +33,7 @@ app.use(passport.initialize());
 app.use(passport.session());
 app.use(flash());
 app.use('/customers',customerRoutes)
+app.use('/shopping_cart',shoppingCartRoutes)
 app.use('/',routes)
 app.listen(8000)
 module.exports = app;
