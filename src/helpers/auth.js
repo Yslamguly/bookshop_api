@@ -8,7 +8,8 @@ function checkNotAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return next();
     }
-    res.redirect("/customers/login");
+    // res.redirect("/customers/login");
+    res.status(401).json('Please, login first')
 }
 
 module.exports = {checkAuthenticated,checkNotAuthenticated}
