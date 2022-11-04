@@ -12,8 +12,8 @@ exports.getUserShoppingCart = (req,res)=>{
                 this.on(`${shopping_cart}.customer_id`,'=',customer_id)
             })
         })
-        .then(data=>res.send(data))
-        .catch(err=>res.status(400).send(err))
+        .then(data=>res.json(data))
+        .catch(err=>res.status(500).json(err))
 }
 
 exports.addBookToShoppingCart = (req,res)=>{
@@ -28,8 +28,8 @@ exports.addBookToShoppingCart = (req,res)=>{
         (SELECT id
         FROM   bookstore.books
         WHERE  id = ${book_id}) AS books`)
-        .then(data=>res.status(201).json('Book has been added successfully'))
-        .catch(err=>res.status(400).json('This book is already in your cart'))
+        .then(data=>res.status(201).json({message:'Book has been added successfully'}))
+        .catch(err=>res.status(400).json({message:'This book is already in your cart'}))
 }
 
 exports.deleteBookFromShoppingCart = (req,res)=>{
@@ -42,6 +42,6 @@ exports.deleteBookFromShoppingCart = (req,res)=>{
         .where('cart_id','=',shopping_cart_id)
         .andWhere('book_id','=',book_id)
         .del()
-        .then(response=>res.status(200).json('Book has been deleted successfully'))
-        .catch(err=>res.status(400).json(err))
+        .then(response=>res.status(200).json({message:'Book has been deleted successfully'}))
+        .catch(err=>res.status(500).json(err))
 }
