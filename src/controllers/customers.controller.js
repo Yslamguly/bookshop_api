@@ -22,8 +22,8 @@ exports.register = async (req,res)=>{
         const hash = await bcrypt.hash(password,10);
         db.transaction(trx => {
             trx.insert({
-                first_name:functions.CapitalizeName(first_name),
-                last_name:functions.CapitalizeName(last_name),
+                first_name:functions.capitalizeName(first_name),
+                last_name:functions.capitalizeName(last_name),
                 email_address:email_address,
                 phone_number:phone_number,
                 password:hash
@@ -43,7 +43,7 @@ exports.register = async (req,res)=>{
         }).catch(err => res.status(400).json('unable to register'))
     }
     else{
-        res.status(400).send(errors)
+        res.status(500).json(errors)
     }
     //     return db('bookstore.customers').returning('*').insert({
     //         first_name:functions.CapitalizeName(first_name),
@@ -66,7 +66,7 @@ exports.login = async (req,res,next)=>{
         }
         req.logIn(user,(err)=>{
             if(err){
-                res.status(400).json(info);
+                res.status(500).json(info);
             }
             console.log(req.session)
             res.json(req.user);
