@@ -7,6 +7,7 @@ const session = require("express-session");
 const initializePassport = require('./helpers/passport-config')
 const customerRoutes = require('./routes/customers.route')
 const shoppingCartRoutes = require('./routes/shopping_cart.route')
+const booksRoutes = require('./routes/books.route')
 const routes = require('./routes/routes')
 const app = express();
 initializePassport(passport)
@@ -34,6 +35,7 @@ app.use(passport.session());
 app.use(flash());
 app.use('/customers',customerRoutes)
 app.use('/shopping_cart',shoppingCartRoutes)
+app.use('/books',booksRoutes)
 app.use('/',routes)
 app.listen(8000)
 module.exports = app;
