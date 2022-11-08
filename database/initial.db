@@ -91,6 +91,6 @@ CREATE TABLE bookstore.book_category (
 	book_id int4 NOT NULL,
 	category_id int4 NOT NULL,
 	CONSTRAINT book_category_pk PRIMARY KEY (id),
-	CONSTRAINT book_category_fk FOREIGN KEY (id) REFERENCES bookstore.books(id) ON UPDATE CASCADE,
-	CONSTRAINT book_category_fk_1 FOREIGN KEY (id) REFERENCES bookstore.categories(id) ON UPDATE CASCADE
+	CONSTRAINT book_category_fk FOREIGN KEY (book_id) REFERENCES bookstore.books(id) ON UPDATE CASCADE,
+	CONSTRAINT book_category_fk_1 FOREIGN KEY (category_id) REFERENCES bookstore.categories(id) ON UPDATE CASCADE
 );
