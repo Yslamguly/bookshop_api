@@ -1,9 +1,10 @@
 const express = require('express');
 const booksController = require('../controllers/books.controller')
-const {paginatedResults} = require('../helpers/middlewares')
+const {paginatedBooks} = require('../helpers/middlewares')
 const router = express.Router();
 
 
-router.get('/',paginatedResults('bookstore.books'),booksController.getBooks);
-
+router.get('/',paginatedBooks(),booksController.getBooks);
+router.get('/details',booksController.getBookById);
+// router.get('/results',paginatedResults('bookstore.books'),booksController.getResults)
 module.exports = router;
