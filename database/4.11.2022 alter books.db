@@ -1,9 +1,0 @@
-ALTER TABLE bookstore.books ADD author_id int NOT NULL;
-ALTER TABLE bookstore.books ADD CONSTRAINT books_fk FOREIGN KEY (id) REFERENCES bookstore.authors(id) ON UPDATE CASCADE;
-
-CREATE TABLE bookstore.authors (
-	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
-	first_name varchar(50) NOT NULL,
-	last_name varchar(50) NOT NULL,
-	CONSTRAINT authors_pk PRIMARY KEY (id)
-);

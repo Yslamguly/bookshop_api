@@ -1,1 +1,0 @@
-ALTER TABLE shopping_cart_item  ADD UNIQUE (cart_id, book_id);

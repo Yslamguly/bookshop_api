@@ -1,0 +1,25 @@
+--1.11.2022
+ALTER TABLE shopping_cart_item  ADD UNIQUE (cart_id, book_id);
+
+
+--4.11.2022
+ALTER TABLE bookstore.countries ADD country_id varchar(3) NOT NULL;
+ALTER TABLE bookstore.books ALTER COLUMN publication_year TYPE smallint USING publication_year::smallint;
+ALTER TABLE bookstore.books ADD author_id int NOT NULL;
+ALTER TABLE bookstore.books ADD CONSTRAINT books_fk FOREIGN KEY (id) REFERENCES bookstore.authors(id) ON UPDATE CASCADE;
+
+CREATE TABLE bookstore.authors (
+	id int4 NOT NULL GENERATED ALWAYS AS IDENTITY,
+	first_name varchar(50) NOT NULL,
+	last_name varchar(50) NOT NULL,
+	CONSTRAINT authors_pk PRIMARY KEY (id)
+);
+
+
+--9.11.2022
+ALTER TABLE bookstore.shopping_cart_item ADD quantity int NOT NULL;
+
+
+--11.11.2022
+ALTER TABLE bookstore.customer_addresses DROP CONSTRAINT fk_address_id;
+ALTER TABLE bookstore.customer_addresses ADD CONSTRAINT fk_address_id FOREIGN KEY (address_id) REFERENCES bookstore.addresses(id) ON DELETE CASCADE ON UPDATE CASCADE;
