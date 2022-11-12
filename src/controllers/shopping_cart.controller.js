@@ -28,6 +28,19 @@ exports.addBookToShoppingCart = (req,res)=>{
         .catch(err=>res.status(500).json({message:err}))
 }
 
+exports.updateBookQuantity = (req,res)=>{
+    const {book_id,quantity} = req.body;
+    const customer_id = req.user[0].id;
+    const cart_id = db.select('id').from('bookstore.shopping_cart')
+                   .where('customer_id','=',customer_id)
+
+    db('bookstore.shopping_cart_item')
+        .where('cart_id','=',cart_id)
+        .andWhere('book_id','=',book_id)
+        .update({quantity:quantity})
+        .then(res.status(200).json({message:'Success'}))
+        .catch(err=>res.status(500).json(err))
+}
 exports.deleteBookFromShoppingCart = (req,res)=>{
     const{shopping_cart_item_book_id} = req.body;
     const customer_id = req.user[0].id;
