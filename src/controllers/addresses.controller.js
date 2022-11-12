@@ -31,9 +31,10 @@ exports.getUserAddresses = (req,res)=>{
                        .leftJoin('bookstore.customers',function(){this.on('customer_addresses.customer_id','=','customers.id')})
         .where('customers.id','=',customer_id)
 
-    db.select('address_line','city','region','postal_code','countries.country_name')
+    db.select('address_line','city','region','postal_code','countries.country_name','customer_addresses.id as customer_addresses_id')
       .from('bookstore.addresses')
       .join('bookstore.countries',function(){this.on('addresses.country_id','=','countries.id')})
+      .join('bookstore.customer_addresses',function(){this.on('addresses.id','=','customer_addresses.address_id')})
       .whereIn('addresses.id',address_id)
       .then(data=>{data.length ? res.json(data) : res.status(200).json('You have no addresses')})
       .catch(()=>res.status(500).json({message:'Internal server error'}))

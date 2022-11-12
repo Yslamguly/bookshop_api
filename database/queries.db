@@ -1,6 +1,7 @@
 --A query to display the books of the user`s shopping cart
-select id,isbn,author_id,title, publication_year, selling_price, image
-from books b where b.id in (select book_id from shopping_cart_item sci left join shopping_cart sc on sci.cart_id  = sc.id where sc.customer_id = 58)
+select  b.id,isbn,title, publication_year, selling_price, image,a.first_name ,a.last_name, sci2.quantity, sci2.price,sci2.total_price
+from books b join authors a on b.author_id = a.id join shopping_cart_item sci2  on sci2.book_id = b.id
+where b.id in (select book_id from shopping_cart_item sci left join shopping_cart sc on sci.cart_id  = sc.id where sc.customer_id = 58) and sci2.cart_id = 9
 
 
 --A query to add books to users' shopping cart
