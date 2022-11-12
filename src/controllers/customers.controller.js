@@ -45,17 +45,6 @@ exports.register = async (req,res)=>{
     else{
         res.status(500).json(errors)
     }
-    //     return db('bookstore.customers').returning('*').insert({
-    //         first_name:functions.CapitalizeName(first_name),
-    //         last_name:functions.CapitalizeName(last_name),
-    //         email_address:email_address,
-    //         phone_number:phone_number,
-    //         password:hash
-    //     }).then(customer=>res.json(customer[0]))
-    //       .catch(err=>res.status(400).send(err))
-    // }else{
-    //     res.status(400).send(errors)
-    // }
 }
 
 exports.login = async (req,res,next)=>{
