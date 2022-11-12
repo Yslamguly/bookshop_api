@@ -17,19 +17,15 @@ exports.getUserShoppingCart = (req,res)=>{
 }
 
 exports.addBookToShoppingCart = (req,res)=>{
-    const{book_id} = req.body;
+    const {book_id} = req.body;
     const customer_id = req.user[0].id;
-    db.raw(`insert into bookstore.shopping_cart_item (cart_id, book_id ) 
-        SELECT shopping_cart.id, books.id 
-        FROM   
-        (SELECT id 
-        FROM   bookstore.shopping_cart 
-        WHERE  customer_id = ${customer_id}) AS shopping_cart, 
-        (SELECT id
-        FROM   bookstore.books
-        WHERE  id = ${book_id}) AS books`)
+    const cart_id = db.select('id').from('bookstore.shopping_cart')
+                       .where('customer_id','=',customer_id)
+    db('bookstore.shopping_cart_item')
+        .insert({cart_id:cart_id,book_id:book_id})
         .then(data=>res.status(201).json({message:'Book has been added successfully'}))
         .catch(err=>res.status(400).json({message:'This book is already in your cart'}))
+        .catch(err=>res.status(500).json({message:err}))
 }
 
 exports.deleteBookFromShoppingCart = (req,res)=>{
