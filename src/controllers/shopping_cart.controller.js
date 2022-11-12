@@ -4,15 +4,15 @@ exports.getUserShoppingCart = (req,res)=>{
     const customer_id = req.user[0].id;
     const shopping_cart = 'bookstore.shopping_cart'
 
-    db.select('id','isbn','author','title','publication_year','selling_price','image')
+    db.select('id','isbn','author_id','title','publication_year','selling_price','image')
         .from('bookstore.books')
         .whereIn('bookstore.books.id',function(){
             this.select('book_id').from('bookstore.shopping_cart_item')
             .leftJoin(shopping_cart,function (){
-                this.on(`${shopping_cart}.customer_id`,'=',customer_id)
-            })
+                this.on(`bookstore.shopping_cart_item.cart_id`,'=',`${shopping_cart}.id`)
+            }).where(`${shopping_cart}.customer_id`,'=',customer_id)
         })
-        .then(data=>res.json(data))
+        .then(data=>{data.length ? res.json(data) : res.status(200).json({message:'You have no books in your cart'})})
         .catch(err=>res.status(500).json(err))
 }
 
