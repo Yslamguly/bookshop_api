@@ -45,11 +45,10 @@ exports.deleteBookFromShoppingCart = (req,res)=>{
     const{shopping_cart_item_book_id} = req.body;
     const customer_id = req.user[0].id;
     const shopping_cart_id = db.select('id').from('bookstore.shopping_cart').where('customer_id','=',customer_id)
-    const book_id = db.select('id').from('bookstore.books').where('id','=',shopping_cart_item_book_id)
 
     db('bookstore.shopping_cart_item')
         .where('cart_id','=',shopping_cart_id)
-        .andWhere('book_id','=',book_id)
+        .andWhere('book_id','=',shopping_cart_item_book_id)
         .del()
         .then(response=>res.status(200).json({message:'Book has been deleted successfully'}))
         .catch(err=>res.status(500).json(err))
