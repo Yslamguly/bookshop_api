@@ -23,3 +23,8 @@ ALTER TABLE bookstore.shopping_cart_item ADD quantity int NOT NULL;
 --11.11.2022
 ALTER TABLE bookstore.customer_addresses DROP CONSTRAINT fk_address_id;
 ALTER TABLE bookstore.customer_addresses ADD CONSTRAINT fk_address_id FOREIGN KEY (address_id) REFERENCES bookstore.addresses(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+
+--12.11.2022
+ALTER TABLE bookstore.shopping_cart_item ADD price int NOT NULL;
+ALTER TABLE bookstore.shopping_cart_item ADD total_price int NULL;
