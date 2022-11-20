@@ -7,6 +7,6 @@ router.get('/',checkNotAuthenticated,shoppingCartController.getUserShoppingCart)
 router.post('/addBook',checkNotAuthenticated,shoppingCartController.addBookToShoppingCart);
 router.delete('/deleteBook',checkNotAuthenticated,shoppingCartController.deleteBookFromShoppingCart);
 router.patch('/updateQuantity',checkNotAuthenticated,shoppingCartController.updateBookQuantity);
-
+router.delete('/emptyShopping_cart',shoppingCartController.emptyShoppingCart);
 module.exports = router;
 
