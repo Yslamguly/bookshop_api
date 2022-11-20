@@ -1,5 +1,16 @@
 const db = require('../../config/db')
 
+
+const tableName = {
+    sci : 'bookstore.shopping_cart_item',
+    sc : 'bookstore.shopping_cart',
+    books : 'bookstore.books',
+    authors : 'bookstore.authors',
+    addresses : 'bookstore.addresses',
+    customer_addresses : 'bookstore.customer_addresses',
+    customers : 'bookstore.customers',
+    countries:'bookstore.countries'
+}
 exports.addUserAddress= (req,res)=>{
     const customer_id = req.user[0].id;
     const{address_line,city,region,postal_code,country_id} = req.body;
@@ -9,9 +20,9 @@ exports.addUserAddress= (req,res)=>{
             city:city,
             region:region,
             postal_code:postal_code,
-            country_id:country_id}).into('bookstore.addresses').returning('id')
+            country_id:country_id}).into(tableName.addresses).returning('id')
             .then(address=>{
-                return trx('bookstore.customer_addresses')
+                return trx(tableName.customer_addresses)
                     .returning('*')
                     .insert({
                         customer_id:customer_id,
@@ -27,15 +38,15 @@ exports.addUserAddress= (req,res)=>{
 
 exports.getUserAddresses = (req,res)=>{
     const customer_id = req.user[0].id;
-    const address_id = db.select('address_id').from('bookstore.customer_addresses')
-                       .leftJoin('bookstore.customers',function(){this.on('customer_addresses.customer_id','=','customers.id')})
-        .where('customers.id','=',customer_id)
+    const address_id = db.select('address_id').from(tableName.customer_addresses)
+                       .leftJoin(tableName.customers,function(){this.on(`${tableName.customer_addresses}.customer_id`,'=',`${tableName.customers}.id`)})
+        .where(`${tableName.customers}.id`,'=',customer_id)
 
-    db.select('address_line','city','region','postal_code','countries.country_name','customer_addresses.id as customer_addresses_id')
-      .from('bookstore.addresses')
-      .join('bookstore.countries',function(){this.on('addresses.country_id','=','countries.id')})
-      .join('bookstore.customer_addresses',function(){this.on('addresses.id','=','customer_addresses.address_id')})
-      .whereIn('addresses.id',address_id)
+    db.select('address_line','city','region','postal_code',`${tableName.countries}.country_name`,`${tableName.customer_addresses}.id as customer_addresses_id`)
+      .from(tableName.addresses)
+      .join(tableName.countries,function(){this.on(`${tableName.addresses}.country_id`,'=',`${tableName.countries}.id`)})
+      .join(tableName.customer_addresses,function(){this.on(`${tableName.addresses}.id`,'=',`${tableName.customer_addresses}.address_id`)})
+      .whereIn(`${tableName.addresses}.id`,address_id)
       .then(data=>{data.length ? res.json(data) : res.status(200).json('You have no addresses')})
       .catch(()=>res.status(500).json({message:'Internal server error'}))
 
