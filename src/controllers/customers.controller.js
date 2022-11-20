@@ -40,10 +40,10 @@ exports.register = async (req,res)=>{
                 })
                 .then(trx.commit)
                 .catch(trx.rollback)
-        }).catch(err => res.status(400).json('unable to register'))
+        }).catch(err => res.status(400).json('It seems like you already registered for this web-site'))
     }
     else{
-        res.status(500).json(errors)
+        res.status(400).json(errors)
     }
 }
 
@@ -51,7 +51,7 @@ exports.login = async (req,res,next)=>{
     passport.authenticate("local",{failureFlash: true,successFlash: 'Successful!' },(err,user,info)=>{
         if (err) { return next(err); }
         if (!user) {
-            return res.status(400).json(info);
+            return res.status(401).json(info);
         }
         req.logIn(user,(err)=>{
             if(err){
