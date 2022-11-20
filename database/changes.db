@@ -28,3 +28,16 @@ ALTER TABLE bookstore.customer_addresses ADD CONSTRAINT fk_address_id FOREIGN KE
 --12.11.2022
 ALTER TABLE bookstore.shopping_cart_item ADD price int NOT NULL;
 ALTER TABLE bookstore.shopping_cart_item ADD total_price int NULL;
+
+--14.11.2022
+ALTER TABLE bookstore.order_line RENAME COLUMN price TO total_price;
+ALTER TABLE bookstore.shop_order DROP CONSTRAINT fk_address_id;
+ALTER TABLE bookstore.shop_order RENAME COLUMN address_id TO customer_address_id;
+ALTER TABLE bookstore.shop_order ADD CONSTRAINT shop_order_fk FOREIGN KEY (customer_address_id) REFERENCES bookstore.customer_addresses(id) ON UPDATE CASCADE;
+ALTER TABLE bookstore.shop_order DROP COLUMN quantity;
+ALTER TABLE bookstore.shop_order RENAME COLUMN total_price TO final_price;
+
+
+--18.11.2022
+ALTER TABLE bookstore.order_line RENAME TO order_item;
+ALTER SEQUENCE bookstore.shop_order_id_seq RENAME TO order_item_id_seq;
