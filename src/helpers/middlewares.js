@@ -1,5 +1,25 @@
 const db = require("../../config/db");
+const jwt = require('jsonwebtoken')
 
+
+const verifyToken = async function(req, res, next){
+    const {authorization} = req.headers
+    if(!authorization){
+        return res.status(403).send({ auth: false, message: 'No token provided.' });
+    }
+    const token = authorization.split(' ')[1];
+
+    if (!token)
+        return res.status(403).send({ auth: false, message: 'No token provided.' });
+    await jwt.verify(token,process.env.JWT_SECRET, function(err, user){
+        if(err) {
+            return res.status(401).send('Bad Auth');
+        } else {
+            req.user = user;
+            next();
+        }
+    })
+}
 function checkAuthenticated(req, res, next) {
     if (req.isAuthenticated()) {
         return res.redirect("/home");
@@ -95,4 +115,4 @@ function paginatedBooks(){
             .catch(err=>res.status(500).json({message:err}))
     }
 }
-module.exports = {checkAuthenticated,checkNotAuthenticated,paginatedResults,paginatedBooks}
+module.exports = {checkAuthenticated,checkNotAuthenticated,paginatedResults,paginatedBooks,verifyToken}
