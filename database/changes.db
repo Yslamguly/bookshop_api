@@ -41,3 +41,12 @@ ALTER TABLE bookstore.shop_order RENAME COLUMN total_price TO final_price;
 --18.11.2022
 ALTER TABLE bookstore.order_line RENAME TO order_item;
 ALTER SEQUENCE bookstore.shop_order_id_seq RENAME TO order_item_id_seq;
+
+
+--20.11.2022
+ALTER TABLE bookstore.shopping_cart DROP CONSTRAINT fk_customer_id;
+ALTER TABLE bookstore.shopping_cart ADD CONSTRAINT fk_customer_id FOREIGN KEY (customer_id) REFERENCES bookstore.customers(id) ON DELETE CASCADE ON UPDATE CASCADE;
+
+--23.12.2022
+ALTER TABLE bookstore.books ADD page_number int NULL;
+ALTER TABLE bookstore.books ADD description text NULL;

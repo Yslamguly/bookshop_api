@@ -91,9 +91,9 @@ function paginatedBooks(){
         const startIndex = (page - 1) * limit;
         const endIndex = page * limit;
 
-        const results = {}
+        const outcome = {}
 
-        setPreviousPage(startIndex,results,page,limit)
+        setPreviousPage(startIndex,outcome,page,limit)
 
         await db.select(`${books}.id`,`${books}.isbn`,`${books}.title`,`${books}.publication_year`,`${books}.selling_price`,`${books}.image`)
             .from(books)
@@ -107,10 +107,11 @@ function paginatedBooks(){
             .andWhereBetween('publication_year',[publication_year_from,publication_year_to])
             .orderBy(sort_value)
             .then((data)=>{
-                setNextPage(endIndex,data.length,results,page,limit)
-                results.results = data.slice(startIndex,endIndex)
+                setNextPage(endIndex,data.length,outcome,page,limit)
+                outcome.outcome = data.slice(startIndex,endIndex)
+                outcome.total_items = data.length
             })
-            .then(()=>res.paginatedBooks = results)
+            .then(()=>res.paginatedBooks = outcome)
             .then(()=>next())
             .catch(err=>res.status(500).json({message:err}))
     }

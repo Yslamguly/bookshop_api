@@ -8,7 +8,15 @@ exports.getBookById = (req,res)=>{
     const books = 'bookstore.books'
     const authors = 'bookstore.authors'
 
-    db.select(`${books}.id`,`${books}.isbn`,`${books}.title`,`${books}.publication_year`,`${books}.selling_price`,`${books}.image`,`${authors}.first_name`,`${authors}.last_name`)
+    db.select(`${books}.id`,`${books}.isbn`,`${books}.title`,
+        `${books}.publication_year`,
+        `${books}.selling_price`,
+        `${books}.image`,
+        `${books}.quantity_in_stock`,
+        `${books}.page_number`,
+        `${books}.description`,
+        `${authors}.first_name`,
+        `${authors}.last_name`)
         .from(books)
         .leftJoin(authors,function(){this.on(`${books}.author_id`,'=',`${authors}.id`)})
         .where(`${books}.id`,'=',book_id)
