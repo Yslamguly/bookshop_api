@@ -31,7 +31,6 @@ exports.register = async (req,res)=>{
                 password:hash
             }).into('bookstore.customers').returning('*')
                 .then(customers=>{
-                    console.log(customers)
                     return trx('bookstore.shopping_cart')
                         .returning('*')
                         .insert({
@@ -39,6 +38,7 @@ exports.register = async (req,res)=>{
                             date_created:new Date()
                         }
                     ).then(()=>{
+                        console.log(customers)
                         const body = {
                             id:customers[0].id,
                             email_address:customers[0].email_address,
@@ -47,7 +47,7 @@ exports.register = async (req,res)=>{
                             phone_number:customers[0].phone_number
                         }
                         const expiry_time = req.session.cookie.originalMaxAge / 1000 //600 seconds
-                        jwt.sign({user:body},
+                        jwt.sign(body,
                             process.env.JWT_SECRET,
                             {expiresIn : `${expiry_time}s`}, //expires in 10 minutes
                             (err,token)=>{
