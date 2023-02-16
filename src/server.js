@@ -1,4 +1,6 @@
-require("dotenv").config();
+if(process.env.NODE_ENV !== 'production'){
+        require("dotenv").config();
+}
 const express = require('express')
 const cors = require('cors')
 const passport = require('passport')
@@ -11,10 +13,14 @@ const booksRoutes = require('./routes/books.route')
 const categoriesRoutes = require('./routes/categories.route')
 const addressesRoutes = require('./routes/addresses.route')
 const orderRoutes = require('./routes/order.route')
+const stripeRoutes = require('./routes/stripe.route')
 const routes = require('./routes/routes')
+
+
 const app = express();
 initializePassport(passport)
 app.use(express.urlencoded({extended: false}));
+app.use('/stripe/webhook', express.raw({type: "*/*"}));
 app.use(express.json());
 app.use(cors())
 app.use(
@@ -42,6 +48,7 @@ app.use('/books',booksRoutes)
 app.use('/categories',categoriesRoutes)
 app.use('/addresses',addressesRoutes)
 app.use('/orders',orderRoutes)
+app.use('/stripe',stripeRoutes)
 app.use('/',routes)
 app.listen(8000)
 module.exports = app;
