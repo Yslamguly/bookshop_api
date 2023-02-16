@@ -1,5 +1,4 @@
 const db = require('../../config/db')
-const jwt = require('jsonwebtoken')
 
 const tableName = {
     shopping_cart_item : 'bookstore.shopping_cart_item',
@@ -38,17 +37,6 @@ exports.addBookToShoppingCart = (req,res)=>{
 
 exports.updateBookQuantity = (req,res)=>{
     const {book_id,quantity,total_price} = req.body;
-    // const updates = ({
-    //     book_id,
-    //     quantity,
-    //     total_price
-    // }) => ({
-    //     book_id,
-    //     quantity,
-    //     total_price
-    // })(req.body);
-
-
     const {customerId} = req.params;
     const cart_id = db.select('id').from(tableName.shopping_cart)
                    .where('customer_id','=',customerId)
@@ -80,16 +68,21 @@ exports.emptyShoppingCart = (req,res)=>{
     const cart_id = db.select('cart_id')
         .from(tableName.shopping_cart)
         .where('customer_id','=',customerId)
-    // const card_id = db.select('cart_id')
-    //     .from(`${tableName.shopping_cart_item}`)
-    //     .join(`${tableName.shopping_cart}`,function(){
-    //         this.on(`${tableName.shopping_cart}.id`,'=',`${tableName.shopping_cart_item}.cart_id`)
-    //     })
-    //     .where(`${tableName.shopping_cart}.customer_id`,'=',customer_id)
 
     db(tableName.shopping_cart_item)
         .where('cart_id','=',cart_id)
         .del()
         .then(()=>res.status(204).send())
         .catch(err=>res.status(500).json(err))
+}
+
+exports.deleteItemsFromShoppingCart = (user_id) =>{
+    const cart_id = db.select('cart_id')
+        .from(tableName.shopping_cart)
+        .where('customer_id','=',user_id)
+    db(tableName.shopping_cart_item)
+        .where('cart_id','=',cart_id)
+        .del()
+        .then()
+        .catch(err=>console.log(err))
 }
