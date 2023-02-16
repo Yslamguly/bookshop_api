@@ -10,10 +10,7 @@ const validatePassword = (password,confirm_password,errors)=>{
 
         return errors.confirm_password = 'Password and confirm password do not match.'
     }
-    if(password.match(regExp)){
-        return;
-    }
-    else{
+    if(!password.match(regExp)){
         return errors.password = 'The password should be between 6 to 20 characters which contains at least one numeric digit, one uppercase and one lowercase letter'
     }
 }
@@ -39,7 +36,7 @@ const validateName = (first_name,last_name,errors)=>{
 }
 
 const validateEmail = (email,errors)=>{
-    const regExp = /^\w+([\.-]?\w+)*@\w+([\.-]?\w+)*(\.\w{2,3})+$/;
+    const regExp = /^([a-zA-Z0-9\\_\\-\\.]+)@([a-zA-Z]+).(.+)$/;
     if(email === ""){
         errors.email_address = 'Email is required'
         return
@@ -50,7 +47,7 @@ const validateEmail = (email,errors)=>{
 }
 
 const validatePhoneNumber = (phone_number,errors)=>{
-    const regExp = /^[0-9]*$/;
+    const regExp = /^\d{9,11}$/;
     if(phone_number === ""){
         errors.phone_number = 'Phone number is required'
         return
