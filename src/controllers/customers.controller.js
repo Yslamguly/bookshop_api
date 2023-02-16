@@ -46,7 +46,7 @@ exports.register = async (req,res)=>{
                             last_name:customers[0].last_name,
                             phone_number:customers[0].phone_number
                         }
-                        const expiry_time = req.session.cookie.originalMaxAge / 1000 //600 seconds
+                        const expiry_time = req.session.cookie.originalMaxAge / 100 //6000 seconds
                         jwt.sign(body,
                             process.env.JWT_SECRET,
                             {expiresIn : `${expiry_time}s`}, //expires in 10 minutes
@@ -85,7 +85,7 @@ exports.login = async (req,res,next)=>{
                 last_name:user.last_name,
                 phone_number:user.phone_number
             }
-            const expiry_time = req.session.cookie.originalMaxAge / 1000 //600 seconds
+            const expiry_time = req.session.cookie.originalMaxAge / 100 //6000 seconds
             jwt.sign(body,
                 process.env.JWT_SECRET,
                 {expiresIn : `${expiry_time}s`}, //expires in 10 minutes
