@@ -50,3 +50,11 @@ ALTER TABLE bookstore.shopping_cart ADD CONSTRAINT fk_customer_id FOREIGN KEY (c
 --23.12.2022
 ALTER TABLE bookstore.books ADD page_number int NULL;
 ALTER TABLE bookstore.books ADD description text NULL;
+
+
+--16.02.2023
+ALTER TABLE bookstore.addresses DROP CONSTRAINT fk_country;
+ALTER TABLE bookstore.addresses DROP COLUMN country_id;
+ALTER TABLE bookstore.shop_order DROP CONSTRAINT shop_order_fk;
+ALTER TABLE bookstore.shop_order DROP COLUMN customer_address_id;
+
