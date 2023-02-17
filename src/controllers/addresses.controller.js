@@ -13,7 +13,7 @@ const tableName = {
 }
 
 exports.addAddress = (customer_id,address_line,city,region,postal_code)=>{
-    db.transaction(trx => {
+    return db.transaction(trx => {
         trx.insert({
             address_line:address_line,
             city:city,

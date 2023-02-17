@@ -87,7 +87,7 @@ exports.webhook = async (req, res) => {
     if (eventType === "checkout.session.completed") {
         stripe.customers
             .retrieve(data.customer)
-            .then(async (customer) => {
+            .then((customer) => {
                 const userId = customer.metadata.userId
                 const line1 = data.customer_details.address.line1
                 const city = data.customer_details.address.city
@@ -95,9 +95,13 @@ exports.webhook = async (req, res) => {
                 const postal_code = data.customer_details.address.postal_code
                 const final_price = data.amount_total / 100
 
-                addAddress(userId,line1,city,state,postal_code)
-                createOrder(userId,final_price)
-                deleteItemsFromShoppingCart(userId)
+                async function completeOrder(){
+                    await addAddress(userId, line1, city, state, postal_code)
+                    await createOrder(userId, final_price)
+                    deleteItemsFromShoppingCart(userId)
+                }
+                completeOrder()
+
             })
             .catch((err) => console.log(err.message));
     }

@@ -26,19 +26,21 @@ exports.createShopOrder = (req,res)=>{
 }
 
 exports.createOrder = (customer_id,final_price)=>{
-    db.transaction(trx=>{
+   return db.transaction(trx=>{
         trx.insert({
             customer_id:customer_id,
             order_date:new Date(),
             final_price:final_price,
         }).into('bookstore.shop_order').returning('id')
             .then(order=>{
+                console.log(order)
                 return trx.raw(`insert into bookstore.order_item (shop_order_id,book_id,quantity,total_price)  
                                  select ${order[0].id} as shop_order_id,book_id,quantity,total_price 
                                  from bookstore.shopping_cart_item sci 
                                  join bookstore.shopping_cart sc  on sc.id  = sci.cart_id 
                                  where sc.customer_id = ${customer_id}`)
                     .then()
+                    .catch((err)=>console.log(err))
             })
             .then(trx.commit)
             .catch(trx.rollback)
