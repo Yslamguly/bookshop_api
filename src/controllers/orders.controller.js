@@ -1,4 +1,5 @@
 const db = require('../../config/db')
+const tableName = require('../../config/table_names.json')
 
 exports.createShopOrder = (req,res)=>{
     const customer_id = req.user[0].id
@@ -10,12 +11,12 @@ exports.createShopOrder = (req,res)=>{
             order_date:new Date(),
             final_price:final_price,
             customer_address_id:customer_address_id
-        }).into('bookstore.shop_order').returning('id')
+        }).into(`${tableName.shop_order}`).returning('id')
             .then(order=>{
-                return trx.raw(`insert into bookstore.order_item (shop_order_id,book_id,quantity,total_price)  
+                return trx.raw(`insert into ${tableName.order_item} (shop_order_id,book_id,quantity,total_price)  
                                  select ${order[0].id} as shop_order_id,book_id,quantity,total_price 
-                                 from bookstore.shopping_cart_item sci 
-                                 join bookstore.shopping_cart sc  on sc.id  = sci.cart_id 
+                                 from ${tableName.shopping_cart_item} sci 
+                                 join ${tableName.shopping_cart} sc  on sc.id  = sci.cart_id 
                                  where sc.customer_id = ${customer_id}`)
                     .then(res.status(200).json({message:'Successfully created order'}))
             })
@@ -34,10 +35,10 @@ exports.createOrder = (customer_id,final_price)=>{
         }).into('bookstore.shop_order').returning('id')
             .then(order=>{
                 console.log(order)
-                return trx.raw(`insert into bookstore.order_item (shop_order_id,book_id,quantity,total_price)  
+                return trx.raw(`insert into ${tableName.order_item} (shop_order_id,book_id,quantity,total_price)  
                                  select ${order[0].id} as shop_order_id,book_id,quantity,total_price 
-                                 from bookstore.shopping_cart_item sci 
-                                 join bookstore.shopping_cart sc  on sc.id  = sci.cart_id 
+                                 from ${tableName.shopping_cart_item} sci 
+                                 join ${tableName.shopping_cart} sc  on sc.id  = sci.cart_id 
                                  where sc.customer_id = ${customer_id}`)
                     .then()
                     .catch((err)=>console.log(err))

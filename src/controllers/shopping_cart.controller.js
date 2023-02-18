@@ -1,11 +1,5 @@
 const db = require('../../config/db')
-
-const tableName = {
-    shopping_cart_item : 'bookstore.shopping_cart_item',
-    shopping_cart : 'bookstore.shopping_cart',
-    books : 'bookstore.books',
-    authors : 'bookstore.authors',
-}
+const tableName = require('../../config/table_names.json')
 
 
 exports.getUserShoppingCart = async (req,res)=>{
@@ -31,7 +25,7 @@ exports.addBookToShoppingCart = (req,res)=>{
     db(tableName.shopping_cart_item)
         .insert({cart_id:cart_id,book_id:book_id,price:price,total_price:price})
         .then(()=>res.status(201).json({message:'Book has been added successfully'}))
-        .catch(()=>res.status(400).json({message:'This book is already in your cart'}))
+        .catch(()=>res.status(409).json({message:'This book is already in your cart'}))
         .catch(err=>res.status(500).json({message:err}))
 }
 

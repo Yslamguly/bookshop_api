@@ -5,6 +5,7 @@ const validations = require('../helpers/validations')
 const functions = require('../helpers/functions');
 const passport = require("passport");
 const jwt = require('jsonwebtoken');
+const tableName = require('../../config/table_names.json')
 
 exports.test = (req,res)=>{
     res.send('hello world');
@@ -29,9 +30,9 @@ exports.register = async (req,res)=>{
                 email_address:email_address,
                 phone_number:phone_number,
                 password:hash
-            }).into('bookstore.customers').returning('*')
+            }).into(`${tableName.customers}`).returning('*')
                 .then(customers=>{
-                    return trx('bookstore.shopping_cart')
+                    return trx(`${tableName.shopping_cart}`)
                         .returning('*')
                         .insert({
                             customer_id:customers[0].id,

@@ -4,6 +4,8 @@ require('dotenv').config()
 const {addAddress} = require("./addresses.controller");
 const {createOrder} = require("./orders.controller");
 const {deleteItemsFromShoppingCart} = require("./shopping_cart.controller");
+
+
 exports.createCheckoutSession = async (req, res) => {
     const customer = await stripe.customers.create({
         metadata: {
@@ -29,7 +31,7 @@ exports.createCheckoutSession = async (req, res) => {
     })
 
     const session = await stripe.checkout.sessions.create({
-        shipping_address_collection: {allowed_countries: ['US', 'CA','HU']},
+        shipping_address_collection: {allowed_countries: ['HU']},
         shipping_options: [
             {
                 shipping_rate_data: {
