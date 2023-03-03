@@ -95,11 +95,14 @@ function paginatedBooks(){
 
         setPreviousPage(startIndex,outcome,page,limit)
 
-        await db.select(`${books}.id`,`${books}.isbn`,`${books}.title`,`${books}.publication_year`,`${books}.selling_price`,`${books}.image`)
+        await db.select(`${books}.id`,`${books}.isbn`,`${books}.title`,`${books}.publication_year`,`${books}.selling_price`,`${books}.image`,'bookstore.authors.first_name','bookstore.authors.last_name')
             .from(books)
             .leftJoin('bookstore.book_category',function (){
             this.on('bookstore.book_category.book_id','=',`${books}.id`)}
-        ).modify(function(queryBuilder){
+        ).leftJoin('bookstore.authors',function (){
+            this.on('bookstore.books.author_id','=','bookstore.authors.id')
+            })
+            .modify(function(queryBuilder){
             if(category_id){
                 queryBuilder.where('bookstore.book_category.category_id','=',category_id)
             }
