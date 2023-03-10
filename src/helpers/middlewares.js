@@ -9,9 +9,17 @@ const verifyToken = async function(req, res, next){
     }
     const token = authorization.split(' ')[1];
 
-    if (!token)
-        return res.status(403).send({ auth: false, message: 'No token provided.' });
+    if (!token){ return res.status(403).send({ auth: false, message: 'No token provided.' });}
+
+
     await jwt.verify(token,process.env.JWT_SECRET, function(err, user){
+        if(!user){
+            return res.status(401).send('Bad Auth');
+        }
+        if(!user.isVerified){
+            return res.status(403).json({message:'Please, verify your email!'})
+        }
+        console.log(user)
         if(err) {
             return res.status(401).send('Bad Auth');
         } else {
