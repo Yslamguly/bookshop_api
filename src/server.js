@@ -14,6 +14,7 @@ const categoriesRoutes = require('./routes/categories.route')
 const addressesRoutes = require('./routes/addresses.route')
 const orderRoutes = require('./routes/order.route')
 const stripeRoutes = require('./routes/stripe.route')
+const testEmailRoutes = require('./routes/testEmail.route')
 const routes = require('./routes/routes')
 
 
@@ -49,6 +50,7 @@ app.use('/categories',categoriesRoutes)
 app.use('/addresses',addressesRoutes)
 app.use('/orders',orderRoutes)
 app.use('/stripe',stripeRoutes)
+app.use('/email-sender',testEmailRoutes)
 app.use('/',routes)
 app.listen(8000)
 module.exports = app;
