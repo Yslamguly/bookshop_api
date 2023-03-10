@@ -5,6 +5,8 @@ const validations = require('../helpers/validations')
 const functions = require('../helpers/functions');
 const passport = require("passport");
 const jwt = require('jsonwebtoken');
+const { v4: uuidv4 } = require('uuid');
+const {sendEmail} = require('../helpers/sendEmail')
 const tableName = require('../../config/table_names.json')
 
 exports.test = (req,res)=>{
@@ -23,13 +25,17 @@ exports.register = async (req,res)=>{
 
     if(isEmpty){
         const hash = await bcrypt.hash(password,10);
+        const verificationString = uuidv4();
+
         db.transaction(trx => {
             trx.insert({
                 first_name:functions.capitalizeName(first_name),
                 last_name:functions.capitalizeName(last_name),
                 email_address:email_address,
                 phone_number:phone_number,
-                password:hash
+                password:hash,
+                isVerified:false,
+                verification_string:verificationString
             }).into(`${tableName.customers}`).returning('*')
                 .then(customers=>{
                     return trx(`${tableName.shopping_cart}`)
@@ -38,25 +44,40 @@ exports.register = async (req,res)=>{
                             customer_id:customers[0].id,
                             date_created:new Date()
                         }
-                    ).then(()=>{
-                        console.log(customers)
-                        const body = {
-                            id:customers[0].id,
-                            email_address:customers[0].email_address,
-                            first_name:customers[0].first_name,
-                            last_name:customers[0].last_name,
-                            phone_number:customers[0].phone_number
-                        }
-                        const expiry_time = req.session.cookie.originalMaxAge / 100 //6000 seconds
-                        jwt.sign(body,
-                            process.env.JWT_SECRET,
-                            {expiresIn : `${expiry_time}s`}, //expires in 10 minutes
-                            (err,token)=>{
-                                if(err){ return res.status(500).send(err)}
-                                res.status(200).json({token})
+                    ).then(async () => {
+                            console.log(customers)
+                            const body = {
+                                id: customers[0].id,
+                                email_address: customers[0].email_address,
+                                first_name: customers[0].first_name,
+                                last_name: customers[0].last_name,
+                                phone_number: customers[0].phone_number
                             }
-                        )
-                    })
+                            try {
+                                await sendEmail({
+                                    to:email_address,
+                                    from:'islamguly28@gmail.com',
+                                    subject: 'Please, verify your email',
+                                    text: `Thanks for registering to InkwellBooks! To verify your email, click here:
+                                           ${process.env.CLIENT_URL}/verify-email/${verificationString}
+                                    `
+                                })
+                            } catch (e){
+                                console.log(e)
+                                res.sendStatus(500)
+                            }
+                            const expiry_time = req.session.cookie.originalMaxAge / 100 //6000 seconds
+                            jwt.sign(body,
+                                process.env.JWT_SECRET,
+                                {expiresIn: `${expiry_time}s`}, //expires in 10 minutes
+                                (err, token) => {
+                                    if (err) {
+                                        return res.status(500).send(err)
+                                    }
+                                    res.status(200).json({token})
+                                }
+                            )
+                        })
                 })
                 .then(trx.commit)
                 .catch(trx.rollback)
@@ -84,7 +105,8 @@ exports.login = async (req,res,next)=>{
                 email_address:user.email_address,
                 first_name:user.first_name,
                 last_name:user.last_name,
-                phone_number:user.phone_number
+                phone_number:user.phone_number,
+                isVerified:user.isVerified
             }
             const expiry_time = req.session.cookie.originalMaxAge / 100 //6000 seconds
             jwt.sign(body,
