@@ -58,3 +58,8 @@ ALTER TABLE bookstore.addresses DROP COLUMN country_id;
 ALTER TABLE bookstore.shop_order DROP CONSTRAINT shop_order_fk;
 ALTER TABLE bookstore.shop_order DROP COLUMN customer_address_id;
 
+
+--03.03.2023
+ALTER TABLE bookstore.customers ADD isVerified bool NOT NULL DEFAULT false;
+ALTER TABLE bookstore.customers ADD verification_string varchar NULL;
+
