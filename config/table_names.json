@@ -1,0 +1,9 @@
+{
+  "shopping_cart_item" : "bookstore.shopping_cart_item",
+  "shopping_cart" : "bookstore.shopping_cart",
+  "books" : "bookstore.books",
+  "authors" : "bookstore.authors",
+  "customers" : "bookstore.customers",
+  "shop_order": "bookstore.shop_order",
+  "order_item": "bookstore.order_item"
+}
