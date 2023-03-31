@@ -6,9 +6,9 @@ const tableName = require('../../config/table_names.json')
 function initialize(passport){
     const authenticateUser= async (email_address, password, done) => {
         db.select('email_address','password').from(`${tableName.customers}`).where('email_address','=',email_address)
-            .then(data=>{
+            .then(async data=>{
                 const pass = data.length > 0 ? data[0].password : ''
-                const isValid = bcrypt.compareSync(password, pass)
+                const isValid = await bcrypt.compareSync(password, pass)
                 if (isValid) {
                     return db.select('*').from(`${tableName.customers}`).where('email_address', '=', email_address)
                         .then(user => done(null, user[0]))
