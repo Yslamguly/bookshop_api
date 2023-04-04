@@ -30,7 +30,7 @@ app.use(
     session({
         // Key we want to keep secret which will encrypt all of our information
         secret: process.env.COOKIE_SECRET,
-        // Should we resave our session variables if nothing has changes which we dont
+        // Should we resave our session variables if nothing has changes which we don't
         resave: false,
         // Save empty value if there is no value which we do not want to do
         saveUninitialized: false,
