@@ -63,3 +63,8 @@ ALTER TABLE bookstore.shop_order DROP COLUMN customer_address_id;
 ALTER TABLE bookstore.customers ADD isVerified bool NOT NULL DEFAULT false;
 ALTER TABLE bookstore.customers ADD verification_string varchar NULL;
 
+
+31.03.2023
+ALTER TABLE bookstore.customers ALTER COLUMN phone_number DROP NOT NULL;
+ALTER TABLE bookstore.customers ALTER COLUMN "password" DROP NOT NULL;
+

@@ -9,9 +9,6 @@ const { v4: uuidv4 } = require('uuid');
 const {sendEmail} = require('../helpers/sendEmail')
 const tableName = require('../../config/table_names.json')
 
-exports.test = (req,res)=>{
-    res.send('hello world');
-}
 
 exports.register = async (req,res)=>{
     const {first_name,last_name,email_address,phone_number,password,confirm_password} = req.body;
@@ -142,83 +139,3 @@ exports.resetPassword = async (req,res)=>{
         res.status(400).json(errors)
     }
 }
-// req.session.flash.error
-
-
-
-// router.post(
-//     '/login',
-//     async (req, res, next) => {
-//         passport.authenticate(
-//             'login',
-//             async (err, user, info) => {
-//                 try {
-//                     if (err || !user) {
-//                         const error = new Error('An error occurred.');
-//
-//                         return next(error);
-//                     }
-//
-//                     req.login(
-//                         user,
-//                         { session: false },
-//                         async (error) => {
-//                             if (error)
-//                                  return next(error);
-//
-//                             const body = { _id: user._id, email: user.email };
-//                             const token = jwt.sign({ user: body }, 'TOP_SECRET');
-//
-//                             return res.json({ token });
-//                         }
-//                     );
-//                 } catch (error) {
-//                     return next(error);
-//                 }
-//             }
-//         )(req, res, next);
-//     }
-// );
-//
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-
-// exports.signinGoogle = passport.authenticate('google',{scope:['profile']})
-// exports.googleCallback = passport.authenticate('google',{session:true})
-//
-//
-//
-// passport.use(new GoogleStrategy({
-//     clientID:process.env['GOOGLE_CLIENT_ID'],
-//     clientSecret: process.env['GOOGLE_CLIENT_SECRET'],
-//     callbackURL: '/oauth2/redirect/google',
-//     userProfileURL: "https: //www.googleapis.com/oauth2/v3/userinfo",
-//     scope: ['profile']
-// }, (_,__,profile,done,res)=>{
-//     const account = profile._json;
-//     console.log(account);
-//     return db('bookstore.customers').returning('*').insert({
-//         first_name:account.name,
-//         last_name: account.name,
-//         email_address:'islamguly28@gmail.com',
-//         phone_number:'sfbkferfw',
-//         password:'efwfwefew'
-//     }).then(customer=>res.json(customer[0]))
-//         .catch(err=>res.send(err).status(400))
-// }))
