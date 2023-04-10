@@ -78,7 +78,10 @@ exports.register = async (req,res)=>{
                 })
                 .then(trx.commit)
                 .catch(trx.rollback)
-        }).catch(err => res.status(409).json({message:'It seems like you already registered for this web-site'}))
+        }).catch(err => {
+            console.log(err)
+            res.status(409).json({message:'Email is invalid or already taken'})
+        })
     }
     else{
         res.status(400).json(errors)
