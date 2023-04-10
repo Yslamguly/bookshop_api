@@ -68,3 +68,7 @@ ALTER TABLE bookstore.customers ADD verification_string varchar NULL;
 ALTER TABLE bookstore.customers ALTER COLUMN phone_number DROP NOT NULL;
 ALTER TABLE bookstore.customers ALTER COLUMN "password" DROP NOT NULL;
 
+
+10.04.2023
+ALTER TABLE bookstore.customers DROP CONSTRAINT customers_phone_number_key;
+
