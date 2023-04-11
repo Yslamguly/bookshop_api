@@ -1,5 +1,5 @@
-const db = require('../../config/db')
-const tableName = require('../../config/table_names.json')
+const db = require('../../../config/db')
+const tableName = require('../../../config/table_names.json')
 
 exports.UpdateOrCreateUserFromOauth = async ({oauthUserInfo}) => {
     const {email} = oauthUserInfo

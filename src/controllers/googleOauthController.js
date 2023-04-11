@@ -1,7 +1,7 @@
-const {getGoogleOauthUrl} = require('../helpers/getGoogleOauthUrl')
+const {getGoogleOauthUrl} = require('../helpers/googleOauth/getGoogleOauthUrl')
 const jwt = require('jsonwebtoken')
-const {getGoogleUser} = require('../helpers/getGoogleUser')
-const {UpdateOrCreateUserFromOauth} = require('../helpers/UpdateOrCreateUserFromOauth')
+const {getGoogleUser} = require('../helpers/googleOauth/getGoogleUser')
+const {UpdateOrCreateUserFromOauth} = require('../helpers/googleOauth/UpdateOrCreateUserFromOauth')
 
 
 exports.getGoogleOauthUrl = (req, res) => {
