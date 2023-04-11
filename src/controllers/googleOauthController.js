@@ -1,7 +1,7 @@
 const {getGoogleOauthUrl} = require('../helpers/googleOauth/getGoogleOauthUrl')
-const jwt = require('jsonwebtoken')
 const {getGoogleUser} = require('../helpers/googleOauth/getGoogleUser')
 const {UpdateOrCreateUserFromOauth} = require('../helpers/googleOauth/UpdateOrCreateUserFromOauth')
+const {signJwtToken} = require("../helpers/jwtTokenHandler");
 
 
 exports.getGoogleOauthUrl = (req, res) => {
@@ -15,22 +15,10 @@ exports.googleOauthCallback = async (req, res) => {
     const oauthUserInfo = await getGoogleUser({code})
 
     UpdateOrCreateUserFromOauth({oauthUserInfo})
-        .then((updatedUser)=>{
-            const {
-                id:id,
-                email_address: email_address,
-                first_name: first_name,
-                last_name: last_name,
-                isVerified: isVerified
-            } = updatedUser
+        .then((updatedUser) => {
             const expiry_time = req.session.cookie.originalMaxAge / 100 //6000 seconds
-            jwt.sign({id,email_address,first_name,last_name,isVerified},
-                process.env.JWT_SECRET,
-                {expiresIn : `${expiry_time}s`}, //expires in 10 minutes
-                (err,token) =>
-                {
-                    if(err){ return res.status(500).send(err)}
-                    res.redirect(`http://localhost:3000/login?token=${token}`)
-                })
-        }).catch((error)=>res.status(500).send(error))
+            signJwtToken(updatedUser, expiry_time)
+                .then((token) => res.redirect(`http://localhost:3000/login?token=${token}`))
+                .catch((e) => res.status(500).send(e))
+        }).catch((error) => res.status(500).send(error))
 }
