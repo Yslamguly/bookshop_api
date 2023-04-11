@@ -4,7 +4,6 @@ const db = require('../../config/db')
 const validations = require('../helpers/validations')
 const functions = require('../helpers/functions');
 const passport = require("passport");
-const jwt = require('jsonwebtoken');
 const {v4: uuidv4} = require('uuid');
 const {sendEmail} = require('../helpers/sendEmail')
 const {signJwtToken} = require('../helpers/jwtTokenHandler')
@@ -51,41 +50,26 @@ exports.register = async (req, res) => {
                                 last_name: customers[0].last_name,
                                 phone_number: customers[0].phone_number
                             }
-                            try {
-                                await sendEmail({
-                                    to: email_address,
-                                    from: 'islamguly28@gmail.com',
-                                    subject: 'Please, verify your email',
-                                    text: `Thanks for registering to InkwellBooks! To verify your email, click here:
+                            await sendEmail({
+                                to: email_address,
+                                from: 'islamguly28@gmail.com',
+                                subject: 'Please, verify your email',
+                                text: `Thanks for registering to InkwellBooks! To verify your email, click here:
                                            ${process.env.CLIENT_URL}/verify-email/${verificationString}
                                     `
-                                })
-                            } catch (e) {
+                            }).catch((e) => {
                                 console.log(e)
                                 res.sendStatus(500)
-                            }
+                            })
                             const expiry_time = req.session.cookie.originalMaxAge / 100 //6000 seconds
-                            signJwtToken(body, expiry_time)
+                            await signJwtToken(body, expiry_time)
                                 .then((token) => res.status(200).json({token}))
                                 .catch((e) => res.status(500).send(e))
-                            // jwt.sign(body,
-                            //     process.env.JWT_SECRET,
-                            //     {expiresIn: `${expiry_time}s`}, //expires in 10 minutes
-                            //     (err, token) => {
-                            //         if (err) {
-                            //             return res.status(500).send(err)
-                            //         }
-                            //         res.status(200).json({token})
-                            //     }
-                            // )
                         })
                 })
                 .then(trx.commit)
                 .catch(trx.rollback)
-        }).catch(err => {
-            // console.log(err)
-            res.status(409).json({message: 'Email is invalid or already taken'})
-        })
+        }).catch(()=> res.status(409).json({message: 'Email is invalid or already taken'}))
     } else {
         res.status(400).json(errors)
     }
