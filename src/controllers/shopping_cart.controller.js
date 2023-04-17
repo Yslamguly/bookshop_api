@@ -32,6 +32,13 @@ exports.addBookToShoppingCart = (req,res)=>{
 exports.updateBookQuantity = (req,res)=>{
     const {book_id,quantity,total_price} = req.body;
     const {customerId} = req.params;
+
+
+    if(book_id === null || quantity === null || total_price === null){
+        res.sendStatus(400)
+    }
+
+
     const cart_id = db.select('id').from(tableName.shopping_cart)
                    .where('customer_id','=',customerId)
 
@@ -47,8 +54,11 @@ exports.updateBookQuantity = (req,res)=>{
 exports.deleteBookFromShoppingCart = (req,res)=>{
     const{shopping_cart_item_book_id} = req.body;
     const {customerId} = req.params;
-    const shopping_cart_id = db.select('id').from(tableName.shopping_cart).where('customer_id','=',customerId)
 
+    if(shopping_cart_item_book_id===null){
+        res.sendStatus(400)
+    }
+    const shopping_cart_id = db.select('id').from(tableName.shopping_cart).where('customer_id','=',customerId)
     db(tableName.shopping_cart_item)
         .where('cart_id','=',shopping_cart_id)
         .andWhere('book_id','=',shopping_cart_item_book_id)
