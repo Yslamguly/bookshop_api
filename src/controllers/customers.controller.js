@@ -69,7 +69,7 @@ exports.register = async (req, res) => {
                 })
                 .then(trx.commit)
                 .catch(trx.rollback)
-        }).catch(()=> res.status(409).json({message: 'Email is invalid or already taken'}))
+        }).catch(() => res.status(409).json({message: 'Email is invalid or already taken'}))
     } else {
         res.status(400).json(errors)
     }
@@ -106,7 +106,13 @@ exports.login = async (req, res, next) => {
     })(req, res, next)
 }
 
+exports.getUserData = (req, res) => {
+    const {customerId} = req.params;
 
+    db.select('*').from(`${tableName.customers}`).where(`${tableName.customers}.id`, '=', customerId)
+        .then((data) => res.send(data))
+        .catch((err) => res.send(err))
+}
 exports.resetPassword = async (req, res) => {
     const {passwordResetCode} = req.params
     const {newPassword, confirmPassword} = req.body
