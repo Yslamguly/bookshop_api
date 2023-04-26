@@ -48,7 +48,7 @@ const validateEmail = (email,errors)=>{
 
 const validatePhoneNumber = (phone_number,errors)=>{
     const regExp = /^\d{9,11}$/;
-    if(phone_number === null){
+    if(phone_number === null || phone_number === ''){
         return
     }
     if(!phone_number.match(regExp)){
