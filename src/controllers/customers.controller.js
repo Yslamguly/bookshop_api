@@ -113,6 +113,27 @@ exports.getUserData = (req, res) => {
         .then((data) => res.send(data))
         .catch((err) => res.send(err))
 }
+
+exports.updateUserData = async (req, res) => {
+    const {customerId} = req.params
+    const {first_name,last_name,phone_number} = req.body
+    const errors = {}
+    validations.validateName(first_name, last_name, errors);
+    validations.validatePhoneNumber(phone_number, errors)
+    const isEmpty = Object.keys(errors).length === 0;
+    if(isEmpty){
+        await db(tableName.customers)
+            .where(`${tableName.customers}.id`, '=', customerId)
+            .update({first_name,last_name,phone_number})
+            .returning('*')
+            .then((data) => res.send(data))
+            .catch((e) => res.status(500).json(e))
+    } else {
+        res.status(400).json(errors)
+    }
+
+}
+
 exports.resetPassword = async (req, res) => {
     const {passwordResetCode} = req.params
     const {newPassword, confirmPassword} = req.body
