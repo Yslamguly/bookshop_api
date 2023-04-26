@@ -126,4 +126,4 @@ function paginatedBooks(){
             .catch(err=>res.status(500).json({message:err}))
     }
 }
-module.exports = {checkAuthenticated,checkNotAuthenticated,paginatedResults,paginatedBooks,verifyToken}
+module.exports = {paginatedBooks,verifyToken}
