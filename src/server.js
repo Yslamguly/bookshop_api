@@ -17,7 +17,6 @@ const stripeRoutes = require('./routes/stripe.route')
 const testEmailRoutes = require('./routes/verify_email.route')
 const passwordRoutes = require('./routes/forgot_password.route')
 const googleOauthRoutes = require('./routes/googleOauth.route')
-const routes = require('./routes/routes')
 
 
 const app = express();
@@ -55,7 +54,6 @@ app.use('/stripe',stripeRoutes)
 app.use('/email-sender',testEmailRoutes)
 app.use('/password',passwordRoutes)
 app.use('/auth',googleOauthRoutes)
-app.use('/',routes)
 app.listen(8000)
 module.exports = app;
 
