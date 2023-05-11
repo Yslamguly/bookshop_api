@@ -60,15 +60,25 @@ exports.updateBookQuantity = (req, res) => {
 
 
 exports.deleteBookFromShoppingCart = async(req, res) => {
+
     const {shopping_cart_item_book_id} = req.body;
+
     const {customerId} = req.params;
 
     if (shopping_cart_item_book_id === null) {
         res.sendStatus(400)
     }
+    if(isNaN(parseInt(shopping_cart_item_book_id))){
+        res.status(400).json({ message: 'Invalid book_id' });
+    }
+    if (isNaN(parseInt(customerId))) {
+        res.status(400).json({ message: 'Invalid user_id' });
+    }
+
     const shopping_cart_id = await db.select('id').from(tableName.shopping_cart).where('customer_id', '=', customerId)
+
     db(tableName.shopping_cart_item)
-        .where('cart_id', '=', shopping_cart_id)
+        .where('cart_id', '=', shopping_cart_id[0].id)
         .andWhere('book_id', '=', shopping_cart_item_book_id)
         .del()
         .then(() => res.status(200).json({message: 'Book has been deleted successfully'}))
