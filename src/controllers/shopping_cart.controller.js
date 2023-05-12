@@ -25,10 +25,10 @@ exports.getUserShoppingCart = (req, res) => {
         .catch(err => res.status(500).json(err))
 }
 
-exports.addBookToShoppingCart = (req, res) => {
+exports.addBookToShoppingCart = async (req, res) => {
     const {book_id, price} = req.body;
     const {customerId} = req.params;
-    const cart_id = db.select('id').from(tableName.shopping_cart)
+    const cart_id = await db.select('id').from(tableName.shopping_cart)
         .where('customer_id', '=', customerId)
     db(tableName.shopping_cart_item)
         .insert({cart_id: cart_id, book_id: book_id, price: price, total_price: price})
