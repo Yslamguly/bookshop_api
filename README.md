@@ -36,6 +36,3 @@ This project is an API for an online bookstore which allows customers to easily 
 
 Contributions are welcome! Please open an issue or pull request for any changes or feature requests.
 
-## License
-
-This project is licensed under the MIT License.
