@@ -1,6 +1,6 @@
 # Online Bookstore
 
-This project is an online bookstore which allows customers to easily browse and purchase books. The users of this app can do their shopping in a friendly user interface. The app is built using NodeJS and ReactJS, and data is stored in a PostgreSQL database. Postman was used for testing the API.
+This project is an API for an online bookstore which allows customers to easily browse and purchase books. The users of this app can do their shopping in a friendly user interface. The app is built using NodeJS and ReactJS, and data is stored in a PostgreSQL database. Postman was used for testing the API.
 
 ## Stack
 
@@ -24,11 +24,10 @@ This project is an online bookstore which allows customers to easily browse and 
 
 1. Clone the repository: `git clone https://github.com/yourusername/online-bookstore.git`
 2. Install dependencies: `npm install`
-3. Set up the database by running the SQL scripts in the `db` folder.
-4. Set up environment variables by creating a `.env` file based on the `.env.example` file.
-5. Start the server: `npm run server`
-6. Start the client: `npm run client`
-7. Open `http://localhost:3000` in your browser to access the app.
+3. Set up the database by running the SQL scripts in the `database/initial.db` file.
+4. Set up environment variables by creating a `.env` file based.
+5. Start the server: `npm start`
+6. You can test the API with Postman
 
 ## Testing
 
