@@ -18,7 +18,6 @@ This project is an API for an online bookstore which allows customers to easily 
 6. **Shopping Cart** - Customers can add books to their shopping cart and view their order summary.
 7. **Pagination** - Book lists are paginated for easier browsing.
 8. **Filtering and Sorting Books** - Customers can filter and sort books based on various criteria such as author, genre, and price.
-9. **Responsive Design** - The app is designed to be responsive and work well on devices of all sizes.
 
 ## Installation and Usage
 
