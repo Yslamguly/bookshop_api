@@ -1,6 +1,6 @@
 # Online Bookstore
 
-This project is an API for an online bookstore which allows customers to easily browse and purchase books. The users of this app can do their shopping in a friendly user interface. The app is built using NodeJS and ReactJS, and data is stored in a PostgreSQL database. Postman was used for testing the API.
+This project is an API for an online bookstore which allows customers to easily browse and purchase books. The users of this app can do their shopping in a friendly user interface. The app is built using NodeJS and ReactJS, and data is stored in a PostgreSQL database. Postman was used for testing the API. For the front end please, visit the this repo [here] (https://github.com/Yslamguly/bookshop_front)
 
 ## Stack
 
