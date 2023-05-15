@@ -21,7 +21,7 @@ This project is an API for an online bookstore which allows customers to easily 
 
 ## Installation and Usage
 
-1. Clone the repository: `git clone https://github.com/yourusername/online-bookstore.git`
+1. Clone the repository: `git clone https://github.com/Yslamguly/bookshop_api.git`
 2. Install dependencies: `npm install`
 3. Set up the database by running the SQL scripts in the `database/initial.db` file.
 4. Set up environment variables by creating a `.env` file based.
